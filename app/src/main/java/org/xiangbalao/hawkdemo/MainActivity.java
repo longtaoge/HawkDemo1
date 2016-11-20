@@ -13,6 +13,8 @@ import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
 import com.orhanobut.hawk.SqliteStorage;
 
+import model.User;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -28,16 +30,19 @@ public class MainActivity extends AppCompatActivity {
 
 
         String databasesPath = Environment.getExternalStorageDirectory()
-                .getAbsolutePath() + "/hawkDome4.db";
+                .getAbsolutePath() + "/hawkDome5.db";
 
         Hawk.init(this).
                 setStorage(new SqliteStorage(MainActivity.this, databasesPath))
-                .setEncryptionMethod(HawkBuilder.EncryptionMethod.NO_ENCRYPTION)
+                .setEncryptionMethod(HawkBuilder.EncryptionMethod.JSON_STRING)
                 .build();
 
 
         Hawk.put("abc",123);
         Hawk.put("abc2","123");
+
+        User user=new User("ZHANGSHAG",10);
+        Hawk.put("USER",user);
 
         Log.i(MainActivity.class.getSimpleName(),String.valueOf(Hawk.get("abc")));
 

@@ -127,7 +127,7 @@ public class HawkBuilder {
         return encryption;
     }
 
-    HawkBuilder setEncryption(Encryption encryption) {
+    public HawkBuilder setEncryption(Encryption encryption) {
         this.encryption = encryption;
         return this;
     }
@@ -169,6 +169,10 @@ public class HawkBuilder {
     }
 
     private void setEncryption() {
+        if (encryption != null) {
+            return;
+
+        }
         switch (getEncryptionMethod()) {
             case NO_ENCRYPTION:
                 encryption = new Base64Encryption();
@@ -188,13 +192,18 @@ public class HawkBuilder {
                     encryption = new Base64Encryption();
                 }
                 break;
+            case JSON_STRING:
+
+                 encryption=new JsonEncryption();
+
+                break;
             default:
                 throw new IllegalStateException("encryption mode should be valid");
         }
     }
 
     public enum EncryptionMethod {
-        HIGHEST, MEDIUM, NO_ENCRYPTION
+        HIGHEST, MEDIUM, NO_ENCRYPTION, JSON_STRING,
     }
 
     public interface Callback {
