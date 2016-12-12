@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 
 import com.orhanobut.hawk.Hawk;
 import com.orhanobut.hawk.HawkBuilder;
@@ -15,7 +16,11 @@ import com.orhanobut.hawk.SqliteStorage;
 
 import model.User;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private Toolbar toolbar;
+    private RelativeLayout content_main;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_main);
+        initView();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-
 
 
         String databasesPath = Environment.getExternalStorageDirectory()
@@ -38,16 +43,16 @@ public class MainActivity extends AppCompatActivity {
                 .build();
 
 
-        Hawk.put("abc",123);
-        Hawk.put("abc2","123");
+        Hawk.put("abc", 123);
+        Hawk.put("abc2", "123");
 
-        User user=new User("ZHANGSHAG",10);
-        Hawk.put("USER",user);
+        User user = new User("ZHANGSHAG", 10);
+        Hawk.put("USER", user);
 
-        Log.i(MainActivity.class.getSimpleName(),String.valueOf(Hawk.get("abc")));
+        Log.i(MainActivity.class.getSimpleName(), String.valueOf(Hawk.get("abc")));
 
 
-        Log.i(MainActivity.class.getSimpleName(),String.valueOf(Hawk.get("abc2")));
+        Log.i(MainActivity.class.getSimpleName(), String.valueOf(Hawk.get("abc2")));
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +62,24 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+
+    private void initView() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        content_main = (RelativeLayout) findViewById(R.id.content_main);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+
+        fab.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.fab:
+
+                break;
+        }
     }
 
 
