@@ -20,6 +20,24 @@ android {
     }
 }
 
+
+task packJar(type:Copy){
+    copy{
+        delete 'build/libs/hawk.jar'
+        from('build/intermediates/bundles/debug/')
+        into('build/libs/')
+        include('classes.jar')
+        rename('classes.jar', 'hawk.jar')
+    }
+}
+
+
+packJar.dependsOn(build)
+build.doLast{
+    packJar
+}
+
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:23.0.0'
