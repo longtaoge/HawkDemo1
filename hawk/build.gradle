@@ -14,28 +14,57 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        debug {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+
+}
+
+//task packJar(type: Copy) {
+//    copy {
+//        delete 'build/libs/hawk.jar'
+//        from('build/intermediates/bundles/debug/')
+//        into('build/libs/')
+//        include('classes.jar')
+//        rename('classes.jar', 'hawk.jar')
+//    }
+//}
+//
+//
+//
+//
+//packJar.dependsOn(build)
+//build.doLast {
+//    packJar
+//}
+
+
+def zipFile = file('build/intermediates/bundles/debug/classes.jar')
+task deleteBuild(type: Delete) {
+    delete "build/libs/hawk.jar"
 }
 
 
-task packJar(type:Copy){
-    copy{
-        delete 'build/libs/hawk.jar'
-        from('build/intermediates/bundles/debug/')
-        into('build/libs/')
-        include('classes.jar')
-        rename('classes.jar', 'hawk.jar')
-    }
-}
+task makeJar(type: Jar) {
+
+    from zipTree(zipFile)
+    from fileTree(dir: 'src/main', includes: ['assets/**'])
+    //目标文件名称
+    archiveName = 'hawk.jar'
+    destinationDir = file('build/libs')
 
 
-packJar.dependsOn(build)
-build.doLast{
-    packJar
 }
+makeJar.dependsOn(deleteBuild, build)
+
+
+
 
 
 dependencies {
